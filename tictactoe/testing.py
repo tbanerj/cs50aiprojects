@@ -4,7 +4,7 @@ import time
 from tictactoe import *
 
 
-board = [[None, None, None],
+board = [['O', 'X', 'X'],
         ['O', 'X', 'X'],
-        [None, None, None]]
-print(player(board))
+        ['O', "O", "X"]]
+print(winner(board))

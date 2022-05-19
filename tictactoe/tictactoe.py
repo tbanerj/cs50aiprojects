@@ -1,7 +1,8 @@
 """
 Tic Tac Toe Player
 """
-
+import copy
+from hashlib import new
 import math
 
 X = "X"
@@ -39,30 +40,62 @@ def player(board):
 
 
 def actions(board):
-    """
-    Returns set of all possible actions (i, j) available on the board.
-    """
+    emptySpaces = []
+    for i in range(3):
+        for j in range(3):
+            if board[i][j] == None:
+                emptySpaces.append([i,j])
+    return emptySpaces
     
 
 def result(board, action):
     """
     Returns the board that results from making move (i, j) on the board.
     """
-    raise NotImplementedError
-
+    newBoard = copy.deepcopy(board)
+    currPlayer = player(board)
+    i = action[0][0]
+    j= action[1][1]
+    board[i][j] = player(board)
+    return board
+    
 
 def winner(board):
     """
     Returns the winner of the game, if there is one.
     """
-    raise NotImplementedError
-
-
+    for i in range(3):
+        if board[i] == [X,X,X]:
+            return X
+        elif board[i] == [O,O,O]:
+            return O
+    if [board[0],board[1],board[2]] == [X,X,X]:
+        print([board[0],board[1],board[2]])
+        return X
+    elif [board[0],board[1],board[2]] == [O,O,O]:
+        print([board[0],board[1],board[2]])
+        return O
+    elif [board[0][0],board[1][1],board[2][2]] == [X,X,X]:
+        print([board[0][0],board[1][1],board[2][2]])
+        return X
+    elif [board[0][0],board[1][1],board[2][2]] == [O,O,O]:
+        return O
+    elif [board[0][2],board[1][1],board[2][0]] == [X,X,X]:
+        return X
+    elif [board[0][2],board[1][1],board[2][0]] == [O,O,O]:
+        return O
+    else:
+        return None
+        
 def terminal(board):
     """
     Returns True if game is over, False otherwise.
     """
-    raise NotImplementedError
+    for i in board:
+        for j in i:
+            if j == None:
+                return False
+    return True
 
 
 def utility(board):
