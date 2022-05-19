@@ -120,8 +120,11 @@ def minimax(board):
     """
     actionlist = actions(board)
     for i in actionlist:
+        print(i)
         updatedBoard = result(board, i)
+        print(updatedBoard)
         if terminal(updatedBoard):
-            return i
+            if winner(updatedBoard) == player(board):
+                return i
         else:
             minimax(updatedBoard)
