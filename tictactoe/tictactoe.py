@@ -54,10 +54,14 @@ def result(board, action):
     """
     newBoard = copy.deepcopy(board)
     currPlayer = player(board)
-    i = action[0][0]
-    j= action[1][1]
-    board[i][j] = player(board)
-    return board
+    if action == None:
+        raise Exception('not valid action')
+    i = action[0]
+    j= action[1]
+    if newBoard[i][j] != None:
+        raise Exception('not valid space')
+    newBoard[i][j] = player(board)
+    return newBoard
     
 
 def winner(board):
@@ -69,14 +73,11 @@ def winner(board):
             return X
         elif board[i] == [O,O,O]:
             return O
-    if [board[0],board[1],board[2]] == [X,X,X]:
-        print([board[0],board[1],board[2]])
-        return X
-    elif [board[0],board[1],board[2]] == [O,O,O]:
-        print([board[0],board[1],board[2]])
-        return O
-    elif [board[0][0],board[1][1],board[2][2]] == [X,X,X]:
-        print([board[0][0],board[1][1],board[2][2]])
+        if [board[0][i],board[1][i],board[2][i]] == [X,X,X]:
+            return X
+        elif [board[0][i],board[1][i],board[2][i]] == [O,O,O]:
+            return O
+    if [board[0][0],board[1][1],board[2][2]] == [X,X,X]:
         return X
     elif [board[0][0],board[1][1],board[2][2]] == [O,O,O]:
         return O
@@ -91,6 +92,8 @@ def terminal(board):
     """
     Returns True if game is over, False otherwise.
     """
+    if winner(board) != None:
+        return True
     for i in board:
         for j in i:
             if j == None:
@@ -102,11 +105,23 @@ def utility(board):
     """
     Returns 1 if X has won the game, -1 if O has won, 0 otherwise.
     """
-    raise NotImplementedError
+    if terminal(board):
+        if winner(board) == X:
+            return 1
+        elif winner(board) == O:
+            return -1
+        else:
+            return 0 
 
 
 def minimax(board):
     """
     Returns the optimal action for the current player on the board.
     """
-    raise NotImplementedError
+    actionlist = actions(board)
+    for i in actionlist:
+        updatedBoard = result(board, i)
+        if terminal(updatedBoard):
+            return i
+        else:
+            minimax(updatedBoard)
